@@ -41,10 +41,7 @@ open class JarFileTransformBenchmark {
                 val stream = InputStreamSupplier {
                     inJar.getInputStream(entry)
                 }
-
-                if (zae.isDirectory && !zae.isUnixSymlink) {
-                    creator.addArchiveEntry(zae, stream)
-                }
+                creator.addArchiveEntry(zae, stream)
             }
 
             ZipArchiveOutputStream(target).use {
