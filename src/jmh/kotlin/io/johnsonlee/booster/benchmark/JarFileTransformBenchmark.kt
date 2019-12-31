@@ -1,7 +1,6 @@
 package io.johnsonlee.booster.benchmark
 
-import org.apache.commons.compress.archivers.zip.*
-import org.apache.commons.compress.parallel.InputStreamSupplier
+import com.didiglobal.booster.transform.util.transform
 import org.openjdk.jmh.annotations.*
 import java.io.File
 import java.nio.file.Files
@@ -29,30 +28,14 @@ open class JarFileTransformBenchmark {
     }
 
     @Benchmark
-    fun parallelTransformJarFile() {
+    fun transformJarFileParallelly() {
         val target = File.createTempFile("parallel-sdklib-", "-25.3.0.jar")
-        JarFile(file).use { inJar ->
-            val creator = ParallelScatterZipCreator()
-
-            inJar.entries().asSequence().forEach { entry ->
-                val zae = ZipArchiveEntry(entry.name).apply {
-                    method = entry.method
-                }
-                val stream = InputStreamSupplier {
-                    inJar.getInputStream(entry)
-                }
-                creator.addArchiveEntry(zae, stream)
-            }
-
-            ZipArchiveOutputStream(target).use {
-                creator.writeTo(it)
-            }
-        }
+        JarFile(this.file).transform(target)
         target.delete()
     }
 
     @Benchmark
-    fun sequentialTransformJarFile() {
+    fun transformJarFileSequentially() {
         val target = Files.createTempFile("sequential-sdklib-", "-25.3.0.jar").toFile()
         target.outputStream().buffered().use { out ->
             JarOutputStream(out).use { outJar ->
@@ -69,6 +52,7 @@ open class JarFileTransformBenchmark {
                 }
             }
         }
+        target.delete()
     }
 
 }
