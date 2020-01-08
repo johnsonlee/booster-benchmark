@@ -1,4 +1,4 @@
-# booster-benchmark
+## Introduction
 
 Benchmark test for [Booster](https://github.com/johnsonlee/booster)
 
