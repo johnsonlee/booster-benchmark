@@ -55,4 +55,10 @@ open class JarFileTransformBenchmark {
         target.delete()
     }
 
+
+    @TearDown
+    fun teardown() {
+        this.file.delete()
+    }
+
 }

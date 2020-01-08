@@ -3,30 +3,28 @@ plugins {
     id("me.champeau.gradle.jmh") version "0.5.0"
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    google()
-    jcenter()
-}
+allprojects {
+    plugins.apply("org.jetbrains.kotlin.jvm")
+    plugins.apply("me.champeau.gradle.jmh")
 
-dependencies {
-    // Align versions of all Kotlin components
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    // Use the Kotlin JDK 8 standard library.
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
-    implementation("org.apache.commons:commons-compress:1.19")
-    implementation("com.didiglobal.booster:booster-transform-util:1.0.0")
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+        jcenter()
+    }
 
-    // Use the Kotlin test library.
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    // Use the Kotlin JUnit integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    dependencies {
+        implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
 
-    jmh(platform("org.jetbrains.kotlin:kotlin-bom"))
-    jmh("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    jmh("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
-    jmh("org.apache.commons:commons-compress:1.19")
-    jmh("com.didiglobal.booster:booster-transform-util:1.0.0")
+        testImplementation("org.jetbrains.kotlin:kotlin-test")
+        testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+        testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+
+        jmh(platform("org.jetbrains.kotlin:kotlin-bom"))
+        jmh("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        jmh("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+    }
 }

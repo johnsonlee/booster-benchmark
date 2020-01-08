@@ -8,3 +8,6 @@
  */
 
 rootProject.name = "booster-benchmark"
+
+include(":class-load")
+include(":jar-file-transform")
