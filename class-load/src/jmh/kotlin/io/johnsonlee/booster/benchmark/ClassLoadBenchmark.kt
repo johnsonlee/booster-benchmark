@@ -1,12 +1,21 @@
 package io.johnsonlee.booster.benchmark
 
 import com.didiglobal.booster.kotlinx.file
-import org.openjdk.jmh.annotations.*
+import org.openjdk.jmh.annotations.Benchmark
+import org.openjdk.jmh.annotations.BenchmarkMode
+import org.openjdk.jmh.annotations.Fork
+import org.openjdk.jmh.annotations.Mode
+import org.openjdk.jmh.annotations.OutputTimeUnit
+import org.openjdk.jmh.annotations.Scope
+import org.openjdk.jmh.annotations.Setup
+import org.openjdk.jmh.annotations.State
 import java.io.File
 import java.net.URLClassLoader
-import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.jar.JarFile
+
+private val HOME = File(System.getProperty("user.home"))
+private val ANDROID_HOME = System.getenv("ANDROID_HOME") ?: "$HOME${File.separator}Library${File.separator}Android${File.separator}sdk"
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
@@ -18,12 +27,9 @@ open class ClassLoadBenchmark {
 
     @Setup
     fun setup() {
-        this.file = File.createTempFile("annotations", "-18.0.0.jar")
-        javaClass.classLoader.getResourceAsStream("annotations-18.0.0.jar").use { input ->
-            file.outputStream().use { output ->
-                input!!.copyTo(output)
-            }
-        }
+        this.file = File(ANDROID_HOME, "platforms").listFiles { _, name ->
+            name.startsWith("android-")
+        }?.min()?.file("android.jar") ?: throw RuntimeException("Android SDK is unavailable")
     }
 
     @Benchmark
@@ -44,11 +50,6 @@ open class ClassLoadBenchmark {
         }.forEach { entry ->
             Class.forName(entry.name.substringBeforeLast(".").replace('/', '.'), false, classLoader)
         }
-    }
-
-    @TearDown
-    fun teardown() {
-        this.file.delete()
     }
 
 }
