@@ -3,7 +3,7 @@ plugins {
     id("me.champeau.gradle.jmh") version "0.5.0"
 }
 
-allprojects {
+subprojects {
     plugins.apply("org.jetbrains.kotlin.jvm")
     plugins.apply("me.champeau.gradle.jmh")
 
