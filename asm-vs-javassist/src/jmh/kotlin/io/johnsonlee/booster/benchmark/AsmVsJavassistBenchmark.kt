@@ -55,7 +55,7 @@ open class ClassLoadBenchmark {
     @Benchmark
     fun transformJarUsingJavassist() {
         val target = File.createTempFile("guava-", "-28.2-jre.jar")
-        val context = object : AbstractTransformContext("transform-jar-using-asm", listOf(AndroidSdk.getAndroidJar(28)), emptyList(), emptyList()) {}
+        val context = object : AbstractTransformContext("transform-jar-using-javassist", listOf(AndroidSdk.getAndroidJar(28)), emptyList(), emptyList()) {}
 
         JavassistTransformer(JavassistThreadTransformer()).let { javassist ->
             javassist.onPreTransform(context)
