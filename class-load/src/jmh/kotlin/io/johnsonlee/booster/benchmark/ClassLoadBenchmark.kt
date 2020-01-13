@@ -1,5 +1,6 @@
 package io.johnsonlee.booster.benchmark
 
+import com.didiglobal.booster.build.AndroidSdk
 import com.didiglobal.booster.kotlinx.file
 import org.openjdk.jmh.annotations.Benchmark
 import org.openjdk.jmh.annotations.BenchmarkMode
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit
 import java.util.jar.JarFile
 
 private val HOME = File(System.getProperty("user.home"))
-private val ANDROID_HOME = System.getenv("ANDROID_HOME") ?: "$HOME${File.separator}Library${File.separator}Android${File.separator}sdk"
+private val ANDROID_HOME = AndroidSdk.getLocation()
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
@@ -27,9 +28,7 @@ open class ClassLoadBenchmark {
 
     @Setup
     fun setup() {
-        this.file = File(ANDROID_HOME, "platforms").listFiles { _, name ->
-            name.startsWith("android-")
-        }?.min()?.file("android.jar") ?: throw RuntimeException("Android SDK is unavailable")
+        this.file = AndroidSdk.getAndroidJar(28)
     }
 
     @Benchmark

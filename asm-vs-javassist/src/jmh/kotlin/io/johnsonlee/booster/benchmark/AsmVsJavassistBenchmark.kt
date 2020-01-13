@@ -1,5 +1,6 @@
 package io.johnsonlee.booster.benchmark
 
+import com.didiglobal.booster.build.AndroidSdk
 import com.didiglobal.booster.transform.AbstractTransformContext
 import com.didiglobal.booster.transform.asm.AsmTransformer
 import com.didiglobal.booster.transform.javassist.JavassistTransformer
@@ -38,20 +39,32 @@ open class ClassLoadBenchmark {
     @Benchmark
     fun transformJarUsingAsm() {
         val target = File.createTempFile("guava-", "-28.2-jre.jar")
-        val context = object : AbstractTransformContext("transform-jar-using-asm", emptyList(), emptyList(), emptyList()) {}
-        val asm = AsmTransformer()
-        JarFile(this.file).transform(target) { bytecode ->
-            asm.transform(context, bytecode)
+        val context = object : AbstractTransformContext("transform-jar-using-asm", listOf(AndroidSdk.getAndroidJar(28)), emptyList(), emptyList()) {}
+
+        AsmTransformer(AsmThreadTransformer()).let { asm ->
+            asm.onPreTransform(context)
+
+            JarFile(this.file).transform(target) { bytecode ->
+                asm.transform(context, bytecode)
+            }
+
+            // asm.onPostTransform(context)
         }
     }
 
     @Benchmark
     fun transformJarUsingJavassist() {
         val target = File.createTempFile("guava-", "-28.2-jre.jar")
-        val context = object : AbstractTransformContext("transform-jar-using-asm", emptyList(), emptyList(), emptyList()) {}
-        val javassist = JavassistTransformer()
-        JarFile(this.file).transform(target) { bytecode ->
-            javassist.transform(context, bytecode)
+        val context = object : AbstractTransformContext("transform-jar-using-asm", listOf(AndroidSdk.getAndroidJar(28)), emptyList(), emptyList()) {}
+
+        JavassistTransformer(JavassistThreadTransformer()).let { javassist ->
+            javassist.onPreTransform(context)
+
+            JarFile(this.file).transform(target) { bytecode ->
+                javassist.transform(context, bytecode)
+            }
+
+            // javassist.onPostTransform(context)
         }
     }
 
