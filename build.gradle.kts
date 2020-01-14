@@ -1,3 +1,5 @@
+extra["booster_version"] = "1.2.2-SNAPSHOT"
+
 plugins {
     kotlin("jvm") version "1.3.41"
     id("me.champeau.gradle.jmh") version "0.5.0"
