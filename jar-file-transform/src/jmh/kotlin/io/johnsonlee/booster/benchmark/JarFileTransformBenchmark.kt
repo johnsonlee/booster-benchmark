@@ -11,6 +11,7 @@ import org.openjdk.jmh.annotations.Mode
 import org.openjdk.jmh.annotations.OutputTimeUnit
 import org.openjdk.jmh.annotations.Scope
 import org.openjdk.jmh.annotations.State
+import org.openjdk.jmh.util.NullOutputStream
 import java.nio.file.Files
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -26,7 +27,7 @@ open class JarFileTransformBenchmark {
 
     @Benchmark
     fun transformJarFileSequentially() {
-        val input = AndroidSdk.getAndroidJar(28)
+        val input = AndroidSdk.getAndroidJar()
         val output = Files.createTempFile("android-", "-28.jar").toFile()
         output.outputStream().buffered().use { out ->
             JarOutputStream(out).use { outJar ->
@@ -45,18 +46,10 @@ open class JarFileTransformBenchmark {
     }
 
     @Benchmark
-    fun transformJarFileWithForkJoinPool() {
-        val input = AndroidSdk.getAndroidJar(28)
-        val output = Files.createTempFile("android-", "-28.jar").toFile()
-        JarFile(input).transform(output, ::ZipArchiveEntry, Executors.newWorkStealingPool(NCPU))
-        output.delete()
-    }
-
-    @Benchmark
     fun transformJarFileWithFixedThreadPool() {
         val input = AndroidSdk.getAndroidJar(28)
         val output = Files.createTempFile("android-", "-28.jar").toFile()
-        JarFile(input).transform(output, ::ZipArchiveEntry, Executors.newFixedThreadPool(NCPU))
+        JarFile(input).transform(NullOutputStream(), ::ZipArchiveEntry)
         output.delete()
     }
 
