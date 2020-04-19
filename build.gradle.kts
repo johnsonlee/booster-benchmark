@@ -1,4 +1,4 @@
-extra["booster_version"] = "1.2.2-SNAPSHOT"
+extra["booster_version"] = "1.6.0"
 
 plugins {
     kotlin("jvm") version "1.3.41"
