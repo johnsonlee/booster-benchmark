@@ -10,6 +10,7 @@
 rootProject.name = "booster-benchmark"
 
 include(":logging")
+include(":cha")
 include(":class-load")
 include(":asm-vs-javassist")
 include(":jar-file-transform")

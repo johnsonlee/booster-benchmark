@@ -15,9 +15,6 @@ import java.net.URLClassLoader
 import java.util.concurrent.TimeUnit
 import java.util.jar.JarFile
 
-private val HOME = File(System.getProperty("user.home"))
-private val ANDROID_HOME = AndroidSdk.getLocation()
-
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Fork(value = 2, jvmArgs = ["-Xms2G", "-Xmx2G"])

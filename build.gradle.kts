@@ -1,7 +1,7 @@
-extra["booster_version"] = "1.6.0"
+extra["booster_version"] = "4.11.0-beta4"
 
 plugins {
-    kotlin("jvm") version "1.3.41"
+    kotlin("jvm") version embeddedKotlinVersion
     id("me.champeau.gradle.jmh") version "0.5.0"
 }
 
@@ -17,16 +17,13 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+        implementation(kotlin("bom"))
+        implementation(kotlin("stdlib"))
 
-        testImplementation("org.jetbrains.kotlin:kotlin-test")
-        testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-        testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+        testImplementation(kotlin("test"))
+        testImplementation(kotlin("test-junit"))
 
-        jmh(platform("org.jetbrains.kotlin:kotlin-bom"))
-        jmh("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-        jmh("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+        jmh(kotlin("bom"))
+        jmh(kotlin("stdlib"))
     }
 }
